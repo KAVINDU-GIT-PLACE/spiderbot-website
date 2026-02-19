@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Monitoring - Hexapod</title>
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="logo">SpiderBot-2.0</div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="dashboard.html">Live Dashboard</a></li>
+  </ul>
+</nav>
+
+<section class="dashboard-section">
+
+  <h1>Live Monitoring Dashboard</h1>
+
+  <div class="status-bar">
+    System Status: <span id="systemStatus" class="safe">ONLINE</span>
+  </div>
+
+  <div class="dashboard-grid">
+
+    <div class="card">
+      <h3>CO Level</h3>
+      <div id="coValue" class="value">--</div>
+      <div id="coStatus"></div>
+    </div>
+
+    <div class="card">
+      <h3>Air Quality</h3>
+      <div id="airValue" class="value">--</div>
+      <div id="airStatus"></div>
+    </div>
+
+  </div> 
+  <!-- 🔥 FIX: Camera section eka dashboard-grid eken eliyata gatta -->
+
+  <canvas id="chart"></canvas>
+
+  <div class="camera-box">
+  <h3>Live Camera Feed</h3>
+  <p style="padding:40px; color:#64748b;">
+    Camera module will be integrated soon.
+    <br><br>
+    (ESP32-CAM Stream will appear here)
+  </p>
+</div>
+
+
+</section>
+
+
+<script>
+
+// 🔥 Firebase Config
+const firebaseConfig = {
+  apiKey: "AIzaSyCehgDLT0amLHXWi1hBSSJzvBQ7R2Nhmg",
+  databaseURL: "https://hexapod-monitoring-system-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hexapod-monitoring-system"
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// 📊 Chart Setup
+const ctx = document.getElementById("chart").getContext("2d");
+
+const myChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: [],
+    datasets: [{
+      label: "CO Level",
+      data: [],
+      borderColor: "#0ea5e9",
+      borderWidth: 2
+    }]
+  }
+});
+
+// 🔄 Realtime Firebase Listener
+database.ref("hexapod").on("value", (snapshot) => {
+
+  const data = snapshot.val();
+
+  if(data){
+
+    document.getElementById("coValue").innerText = data.co;
+    document.getElementById("airValue").innerText = data.air;
+
+    document.getElementById("coStatus").innerText =
+      data.co > 2000 ? "⚠️ Danger" : "✅ Safe";
+
+    document.getElementById("airStatus").innerText =
+      data.air > 2000 ? "⚠️ Poor Air" : "✅ Good";
+
+    // 🔥 OPTIONAL: Update last update time ekak hadanna puluwan meyata passe
+
+    if(myChart.data.labels.length > 20){
+      myChart.data.labels.shift();
+      myChart.data.datasets[0].data.shift();
+    }
+
+    myChart.data.labels.push("");
+    myChart.data.datasets[0].data.push(data.co);
+    myChart.update();
+  }
+
+});
+
+</script>
+
+</body>
+</html>

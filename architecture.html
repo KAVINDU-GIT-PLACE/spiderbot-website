@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>System Architecture - SpiderBot 2.0</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="logo">SpiderBot-2.0</div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="dashboard.html">Live Dashboard</a></li>
+    <li><a href="architecture.html">Architecture</a></li>
+  </ul>
+</nav>
+
+<section class="architecture">
+
+  <h1>System Architecture</h1>
+
+  <h2>1. System Overview</h2>
+  <p>
+    SpiderBot 2.0 is an IoT-based hexapod robotic monitoring system 
+    designed for environmental gas detection and real-time surveillance. 
+    The system integrates embedded hardware components with a cloud-based 
+    monitoring platform.
+  </p>
+
+  <h2>2. Hardware Architecture</h2>
+  <ul style="text-align:left; max-width:700px; margin:auto;">
+    <li><strong>ESP32 (Control Unit)</strong> – Handles movement and sensor coordination</li>
+    <li><strong>MQ-7 Gas Sensor</strong> – Detects Carbon Monoxide (CO)</li>
+    <li><strong>MQ-135 Sensor</strong> – Measures air quality</li>
+    <li><strong>ESP32-CAM</strong> – Provides live video surveillance</li>
+    <li><strong>Servo Motors</strong> – Controls hexapod movement</li>
+  </ul>
+
+  <h2>3. Software Architecture</h2>
+  <p>
+    The system uses ESP32 firmware for sensor acquisition and WiFi 
+    communication. Sensor data is transmitted to Firebase Realtime Database, 
+    where it is accessed by a web-based dashboard for visualization.
+  </p>
+
+  <h2>4. Data Flow</h2>
+  <p>
+    Sensors → ESP32 → WiFi → Firebase Cloud → Web Dashboard
+  </p>
+
+  <div style="margin-top:40px;">
+    <img src="architecture-diagram.png" alt="System Architecture Diagram">
+    <p style="margin-top:10px; font-size:14px; color:#64748b;">
+      Figure 1: High-Level System Architecture Diagram
+    </p>
+  </div>
+
+</section>
+
+</body>
+</html>
