@@ -1,77 +1,76 @@
-// ===== VARIABLES =====
-let coHistory = [];
-let startTime = Date.now();
-let maxRows = 30;
+<script>
 
-// ===== REALTIME FIREBASE LISTENER =====
+// ===== FIREBASE CONFIG =====
+const firebaseConfig = {
+  apiKey: "AIzaSyCehgDLT0amLHXWi1hBSSJzvBQ7R2Nhmg",
+  databaseURL: "https://hexapod-monitoring-system-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hexapod-monitoring-system"
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// ===== CHART SETUP =====
+const ctx = document.getElementById("historyChart").getContext("2d");
+
+const historyChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: [],
+    datasets: [
+      {
+        label: "CO Level",
+        data: [],
+        borderColor: "#0ea5e9",
+        borderWidth: 2
+      },
+      {
+        label: "Air Quality",
+        data: [],
+        borderColor: "#ef4444",
+        borderWidth: 2
+      }
+    ]
+  }
+});
+
+const tableBody = document.getElementById("historyTable");
+let maxRows = 50;
+
+// ===== REALTIME LISTENER =====
 database.ref("hexapod").on("value", (snapshot) => {
 
   const data = snapshot.val();
 
   if(data){
 
-    // ===== UPDATE SENSOR VALUES =====
-    document.getElementById("coValue").innerText = data.co;
-    document.getElementById("airValue").innerText = data.air;
+    const currentTime = new Date().toLocaleTimeString();
 
-    // ===== LAST UPDATE TIME =====
-    document.getElementById("lastUpdate").innerText =
-      new Date().toLocaleTimeString();
-
-    // ===== SMART ALERT SYSTEM =====
-    if(data.co > 3000){
-      document.body.style.background = "#ffe5e5";
-      document.getElementById("coStatus").innerText = "🚨 CRITICAL";
-      document.getElementById("coStatus").className = "danger";
-    }
-    else if(data.co > 2000){
-      document.body.style.background = "#fff7e6";
-      document.getElementById("coStatus").innerText = "⚠️ Warning";
-      document.getElementById("coStatus").className = "warning";
-    }
-    else{
-      document.body.style.background = "#eef2f7";
-      document.getElementById("coStatus").innerText = "✅ Safe";
-      document.getElementById("coStatus").className = "safe";
+    // Update Chart
+    if(historyChart.data.labels.length > maxRows){
+      historyChart.data.labels.shift();
+      historyChart.data.datasets[0].data.shift();
+      historyChart.data.datasets[1].data.shift();
     }
 
-    // Air Status
-    if(data.air > 2000){
-      document.getElementById("airStatus").innerText = "⚠️ Poor Air";
-      document.getElementById("airStatus").className = "warning";
-    }
-    else{
-      document.getElementById("airStatus").innerText = "✅ Good";
-      document.getElementById("airStatus").className = "safe";
-    }
+    historyChart.data.labels.push(currentTime);
+    historyChart.data.datasets[0].data.push(data.co);
+    historyChart.data.datasets[1].data.push(data.air);
+    historyChart.update();
 
-    // ===== ANALYTICS =====
-    coHistory.push(data.co);
+    // Update Table
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${currentTime}</td>
+      <td>${data.co}</td>
+      <td>${data.air}</td>
+    `;
 
-    if(coHistory.length > 100){
-      coHistory.shift();
-    }
-
-    const max = Math.max(...coHistory);
-    const avg = (coHistory.reduce((a,b)=>a+b,0) / coHistory.length).toFixed(0);
-
-    document.getElementById("maxCo").innerText = max;
-    document.getElementById("avgCo").innerText = avg;
-
-    const seconds = Math.floor((Date.now() - startTime)/1000);
-    document.getElementById("uptime").innerText = seconds + " sec";
-
-    // ===== GRAPH UPDATE =====
-    if(myChart.data.labels.length > maxRows){
-      myChart.data.labels.shift();
-      myChart.data.datasets[0].data.shift();
-      myChart.data.datasets[1].data.shift();
+    if(tableBody.rows.length >= maxRows){
+      tableBody.deleteRow(0);
     }
 
-    myChart.data.labels.push("");
-    myChart.data.datasets[0].data.push(data.co);
-    myChart.data.datasets[1].data.push(data.air);
-    myChart.update();
+    tableBody.appendChild(row);
   }
 });
 
@@ -93,12 +92,11 @@ function exportCSV() {
   const url = window.URL.createObjectURL(blob);
 
   const a = document.createElement("a");
-  a.setAttribute("hidden", "");
-  a.setAttribute("href", url);
-  a.setAttribute("download", "hexapod_history.csv");
-  document.body.appendChild(a);
+  a.href = url;
+  a.download = "hexapod_history.csv";
   a.click();
-  document.body.removeChild(a);
+
+  window.URL.revokeObjectURL(url);
 }
 
 
@@ -112,7 +110,7 @@ function generateReport() {
     return;
   }
 
-  let reportWindow = window.open("", "_blank", "width=900,height=700");
+  let reportWindow = window.open("", "_blank");
 
   let htmlContent = `
     <html>
@@ -121,19 +119,9 @@ function generateReport() {
       <style>
         body { font-family: Arial; padding:20px; }
         h2 { text-align:center; }
-        table {
-          width:100%;
-          border-collapse: collapse;
-          margin-top:20px;
-        }
-        th, td {
-          border:1px solid #000;
-          padding:8px;
-          text-align:center;
-        }
-        th {
-          background:#f2f2f2;
-        }
+        table { width:100%; border-collapse: collapse; margin-top:20px; }
+        th, td { border:1px solid #000; padding:8px; text-align:center; }
+        th { background:#f2f2f2; }
       </style>
     </head>
     <body>
@@ -157,7 +145,8 @@ function generateReport() {
     </html>
   `;
 
-  reportWindow.document.open();
   reportWindow.document.write(htmlContent);
   reportWindow.document.close();
 }
+
+</script>
