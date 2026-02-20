@@ -29,6 +29,13 @@ body {
   z-index: 1000;
 }
 
+/* ===== ACTIVE NAV LINK ===== */
+.navbar a.active {
+  color: #38bdf8;
+  border-bottom: 2px solid #38bdf8;
+  padding-bottom: 4px;
+}
+
 .logo {
   font-size: 22px;
   font-weight: 600;
@@ -291,5 +298,6 @@ footer {
   font-size: 14px;
   color: #64748b;
 }
+
 
 
