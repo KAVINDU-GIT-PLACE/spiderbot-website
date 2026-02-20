@@ -101,24 +101,18 @@ database.ref("hexapod").on("value", (snapshot) => {
 
   const data = snapshot.val();
 
-  if(data){
-
-    document.getElementById("coValue").innerText = data.co;
-    document.getElementById("airValue").innerText = data.air;
-
-    // 🕒 Last Update Time
-    document.getElementById("lastUpdate").innerText =
-      new Date().toLocaleTimeString();
-
-    // 🚨 CO Alert
-    if(data.co > 2000){
-      document.getElementById("coStatus").innerText = "⚠️ Danger";
-      document.getElementById("coStatus").className = "danger";
-    }else{
-      document.getElementById("coStatus").innerText = "✅ Safe";
-      document.getElementById("coStatus").className = "safe";
-    }
-
+  if(data.co > 3000){
+  document.body.style.background = "#ffe5e5";
+  document.getElementById("coStatus").innerText = "🚨 CRITICAL";
+  document.getElementById("coStatus").className = "danger";
+}else if(data.co > 2000){
+  document.getElementById("coStatus").innerText = "⚠️ Warning";
+  document.getElementById("coStatus").className = "warning";
+}else{
+  document.body.style.background = "#eef2f7";
+  document.getElementById("coStatus").innerText = "✅ Safe";
+  document.getElementById("coStatus").className = "safe";
+}
     // 🌫 Air Alert
     if(data.air > 2000){
       document.getElementById("airStatus").innerText = "⚠️ Poor Air";
@@ -147,3 +141,4 @@ database.ref("hexapod").on("value", (snapshot) => {
 
 </body>
 </html>
+
