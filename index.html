@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Hexapod Monitoring System</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
+<!-- ===== NAVBAR ===== -->
 <nav class="navbar">
   <div class="logo">Hexapod-Cloud</div>
   <ul>
-    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html" class="active">Home</a></li>
     <li><a href="dashboard.html">Live Dashboard</a></li>
     <li><a href="history.html">History</a></li>
     <li><a href="architecture.html">Architecture</a></li>
@@ -18,6 +21,7 @@
   </ul>
 </nav>
 
+<!-- ===== HERO SECTION ===== -->
 <section class="hero">
   <div class="hero-content">
     <h1>Smart Hexapod Monitoring Platform</h1>
@@ -28,13 +32,14 @@
   </div>
 </section>
 
+<!-- ===== FEATURES SECTION ===== -->
 <section class="features">
 
   <div class="card">
     <h3>Real-Time Gas Detection</h3>
     <p>
-      MQ-7 & MQ-135 sensors continuously monitor CO concentration and air quality,
-      providing instant cloud updates.
+      MQ-7 and MQ-135 sensors continuously monitor carbon monoxide
+      concentration and overall air quality in real time.
     </p>
   </div>
 
@@ -42,28 +47,29 @@
     <h3>Cloud Integration</h3>
     <p>
       Sensor data is transmitted to Firebase Realtime Database,
-      enabling remote monitoring from anywhere.
+      enabling remote monitoring from anywhere through a web interface.
     </p>
   </div>
 
   <div class="card">
     <h3>Live Surveillance</h3>
     <p>
-      Integrated ESP32-CAM provides real-time video streaming
-      for remote situational awareness.
+      Integrated ESP32-CAM module provides real-time video streaming
+      for enhanced situational awareness.
     </p>
   </div>
 
   <div class="card">
     <h3>Historical Analytics</h3>
     <p>
-      View historical sensor data trends, peak values,
-      and analytics through interactive graph visualization.
+      Interactive graphs and data tables allow analysis of
+      historical sensor readings and system performance trends.
     </p>
   </div>
 
 </section>
 
+<!-- ===== DATA FLOW SECTION ===== -->
 <section class="architecture" style="text-align:center; padding:60px 20px;">
   <h2>System Data Flow</h2>
   <p>
@@ -71,8 +77,10 @@
   </p>
 </section>
 
+<!-- ===== FOOTER ===== -->
 <footer>
-  © <span id="year"></span> Hexapod Monitoring System | Department of Computing
+  © <span id="year"></span> Hexapod Monitoring System |
+  Department of Computing
 </footer>
 
 <script>
