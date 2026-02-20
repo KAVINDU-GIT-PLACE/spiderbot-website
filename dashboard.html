@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Live Monitoring - Hexapod</title>
   <link rel="stylesheet" href="style.css">
 
@@ -14,11 +15,16 @@
 
 <body>
 
+<!-- ===== NAVBAR ===== -->
 <nav class="navbar">
   <div class="logo">Hexapod-Cloud</div>
   <ul>
     <li><a href="index.html">Home</a></li>
-    <li><a href="dashboard.html">Live Dashboard</a></li>
+    <li><a href="dashboard.html" class="active">Live Dashboard</a></li>
+    <li><a href="history.html">History</a></li>
+    <li><a href="architecture.html">Architecture</a></li>
+    <li><a href="research.html">Research</a></li>
+    <li><a href="team.html">Team</a></li>
   </ul>
 </nav>
 
@@ -26,12 +32,14 @@
 
   <h1>Live Monitoring Dashboard</h1>
 
+  <!-- STATUS BAR -->
   <div class="status-bar">
     System Status: <span id="systemStatus" class="safe">ONLINE</span>
     <br>
     Last Update: <span id="lastUpdate">--</span>
   </div>
 
+  <!-- SENSOR CARDS -->
   <div class="dashboard-grid">
 
     <div class="card">
@@ -46,17 +54,19 @@
       <div id="airStatus"></div>
     </div>
 
+    <div class="card">
+      <h3>Analytics</h3>
+      <p>Max CO: <span id="maxCo">--</span></p>
+      <p>Avg CO: <span id="avgCo">--</span></p>
+      <p>System Uptime: <span id="uptime">--</span></p>
+    </div>
+
   </div>
 
-  <div class="card">
-  <h3>Analytics</h3>
-  <p>Max CO: <span id="maxCo">--</span></p>
-  <p>Avg CO: <span id="avgCo">--</span></p>
-  <p>System Uptime: <span id="uptime">--</span></p>
-</div>
-
+  <!-- LIVE GRAPH -->
   <canvas id="chart"></canvas>
 
+  <!-- CAMERA SECTION -->
   <div class="camera-box">
     <h3>Live Camera Feed</h3>
     <iframe src="http://ESP32_CAM_IP:81/stream"
@@ -69,7 +79,7 @@
 
 <script>
 
-// 🔥 Firebase Config
+// ===== FIREBASE CONFIG =====
 const firebaseConfig = {
   apiKey: "AIzaSyCehgDLT0amLHXWi1hBSSJzvBQ7R2Nhmg",
   databaseURL: "https://hexapod-monitoring-system-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -79,7 +89,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-// 📊 Chart Setup
+// ===== CHART SETUP =====
 const ctx = document.getElementById("chart").getContext("2d");
 
 const myChart = new Chart(ctx, {
@@ -103,34 +113,71 @@ const myChart = new Chart(ctx, {
   }
 });
 
-// 🔄 Realtime Firebase Listener
+// ===== ANALYTICS VARIABLES =====
+let coHistory = [];
+let startTime = Date.now();
+let maxRows = 30;
+
+// ===== REALTIME LISTENER =====
 database.ref("hexapod").on("value", (snapshot) => {
 
   const data = snapshot.val();
 
-  if(data.co > 3000){
-  document.body.style.background = "#ffe5e5";
-  document.getElementById("coStatus").innerText = "🚨 CRITICAL";
-  document.getElementById("coStatus").className = "danger";
-}else if(data.co > 2000){
-  document.getElementById("coStatus").innerText = "⚠️ Warning";
-  document.getElementById("coStatus").className = "warning";
-}else{
-  document.body.style.background = "#eef2f7";
-  document.getElementById("coStatus").innerText = "✅ Safe";
-  document.getElementById("coStatus").className = "safe";
-}
-    // 🌫 Air Alert
+  if(data){
+
+    // Update values
+    document.getElementById("coValue").innerText = data.co;
+    document.getElementById("airValue").innerText = data.air;
+
+    // Last update
+    document.getElementById("lastUpdate").innerText =
+      new Date().toLocaleTimeString();
+
+    // ===== SMART ALERT SYSTEM =====
+    if(data.co > 3000){
+      document.body.style.background = "#ffe5e5";
+      document.getElementById("coStatus").innerText = "🚨 CRITICAL";
+      document.getElementById("coStatus").className = "danger";
+    }
+    else if(data.co > 2000){
+      document.body.style.background = "#fff7e6";
+      document.getElementById("coStatus").innerText = "⚠️ Warning";
+      document.getElementById("coStatus").className = "warning";
+    }
+    else{
+      document.body.style.background = "#eef2f7";
+      document.getElementById("coStatus").innerText = "✅ Safe";
+      document.getElementById("coStatus").className = "safe";
+    }
+
+    // Air status
     if(data.air > 2000){
       document.getElementById("airStatus").innerText = "⚠️ Poor Air";
-      document.getElementById("airStatus").className = "danger";
-    }else{
+      document.getElementById("airStatus").className = "warning";
+    }
+    else{
       document.getElementById("airStatus").innerText = "✅ Good";
       document.getElementById("airStatus").className = "safe";
     }
 
-    // 📊 Graph Update
-    if(myChart.data.labels.length > 20){
+    // ===== ANALYTICS =====
+    coHistory.push(data.co);
+
+    if(coHistory.length > 100){
+      coHistory.shift();
+    }
+
+    const max = Math.max(...coHistory);
+    const avg = (coHistory.reduce((a,b)=>a+b,0) / coHistory.length).toFixed(0);
+
+    document.getElementById("maxCo").innerText = max;
+    document.getElementById("avgCo").innerText = avg;
+
+    const seconds = Math.floor((Date.now() - startTime)/1000);
+    document.getElementById("uptime").innerText = seconds + " sec";
+
+    // ===== GRAPH UPDATE =====
+    if(myChart.data.labels.length > maxRows){
       myChart.data.labels.shift();
       myChart.data.datasets[0].data.shift();
       myChart.data.datasets[1].data.shift();
@@ -148,5 +195,3 @@ database.ref("hexapod").on("value", (snapshot) => {
 
 </body>
 </html>
-
-
