@@ -1,30 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Historical Data - Hexapod</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 </head>
 
 <body>
 
+<!-- ===== NAVBAR ===== -->
 <nav class="navbar">
   <div class="logo">Hexapod-Cloud</div>
   <ul>
-    <li><a href="dashboard.html">Live</a></li>
-    <li><a href="history.html">History</a></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="dashboard.html">Live Dashboard</a></li>
+    <li><a href="history.html" class="active">History</a></li>
+    <li><a href="architecture.html">Architecture</a></li>
+    <li><a href="research.html">Research</a></li>
+    <li><a href="team.html">Team</a></li>
   </ul>
 </nav>
 
 <section class="dashboard-section">
+
   <h1>Historical Monitoring Data</h1>
+
+  <!-- ===== HISTORICAL CHART ===== -->
   <canvas id="historyChart"></canvas>
+
+  <!-- ===== DATA TABLE ===== -->
+  <table>
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>CO Level</th>
+        <th>Air Quality</th>
+      </tr>
+    </thead>
+    <tbody id="historyTable"></tbody>
+  </table>
+
 </section>
 
 <script>
 
+// ===== FIREBASE CONFIG =====
 const firebaseConfig = {
   apiKey: "AIzaSyCehgDLT0amLHXWi1hBSSJzvBQ7R2Nhmg",
   databaseURL: "https://hexapod-monitoring-system-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -34,6 +61,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
+// ===== CHART SETUP =====
 const ctx = document.getElementById("historyChart").getContext("2d");
 
 const historyChart = new Chart(ctx, {
@@ -57,23 +85,45 @@ const historyChart = new Chart(ctx, {
   }
 });
 
-// Listen to live data & store last 50 values
+const tableBody = document.getElementById("historyTable");
+
+let maxRows = 50;
+
+// ===== REALTIME DATA LISTENER =====
 database.ref("hexapod").on("value", (snapshot) => {
 
   const data = snapshot.val();
+
   if(data){
 
-    if(historyChart.data.labels.length > 50){
+    const currentTime = new Date().toLocaleTimeString();
+
+    // ===== UPDATE CHART =====
+    if(historyChart.data.labels.length > maxRows){
       historyChart.data.labels.shift();
       historyChart.data.datasets[0].data.shift();
       historyChart.data.datasets[1].data.shift();
     }
 
-    historyChart.data.labels.push(new Date().toLocaleTimeString());
+    historyChart.data.labels.push(currentTime);
     historyChart.data.datasets[0].data.push(data.co);
     historyChart.data.datasets[1].data.push(data.air);
-
     historyChart.update();
+
+    // ===== UPDATE TABLE =====
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${currentTime}</td>
+      <td>${data.co}</td>
+      <td>${data.air}</td>
+    `;
+
+    if(tableBody.rows.length >= maxRows){
+      tableBody.deleteRow(0);
+    }
+
+    tableBody.appendChild(row);
   }
 
 });
