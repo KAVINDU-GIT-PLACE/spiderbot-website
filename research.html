@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Research Details - SpiderBot 2.0</title>
+  <meta charset="UTF-8">
+  <title>Research Details - Hexapod Monitoring System</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<!-- ===== NAVBAR ===== -->
 <nav class="navbar">
-  <div class="logo">SpiderBot-2.0</div>
+  <div class="logo">Hexapod-Cloud</div>
   <ul>
     <li><a href="index.html">Home</a></li>
     <li><a href="dashboard.html">Live Dashboard</a></li>
+    <li><a href="history.html">History</a></li>
     <li><a href="architecture.html">Architecture</a></li>
-    <li><a href="research.html">Research</a></li>
+    <li><a href="research.html" class="active">Research</a></li>
+    <li><a href="team.html">Team</a></li>
   </ul>
 </nav>
 
@@ -23,54 +27,89 @@
 
   <h2>1. Problem Statement</h2>
   <p>
-    Hazardous gas environments pose significant risks to human safety. 
-    Traditional monitoring systems lack mobility and real-time cloud integration. 
-    There is a need for an intelligent mobile monitoring system capable of 
-    environmental sensing and live surveillance.
+    Hazardous gas environments pose significant risks to human safety, 
+    particularly in industrial zones, mining areas, and confined spaces. 
+    Traditional monitoring systems lack mobility, remote accessibility, 
+    and real-time cloud integration. There is a critical need for an 
+    intelligent mobile monitoring platform capable of environmental sensing, 
+    cloud-based analytics, and live surveillance.
   </p>
 
-  <h2>2. Objectives</h2>
+  <h2>2. Research Objectives</h2>
   <ul style="text-align:left; max-width:800px; margin:auto;">
-    <li>Design a hexapod-based mobile monitoring robot.</li>
-    <li>Integrate MQ-series gas sensors for environmental detection.</li>
-    <li>Implement real-time cloud data transmission using Firebase.</li>
-    <li>Develop a web-based dashboard for remote monitoring.</li>
-    <li>Enable live camera streaming for surveillance.</li>
+    <li>Design and develop a hexapod-based mobile robotic monitoring platform.</li>
+    <li>Integrate MQ-series gas sensors for real-time environmental detection.</li>
+    <li>Implement cloud-based data transmission using Firebase Realtime Database.</li>
+    <li>Develop a responsive web dashboard for remote monitoring and visualization.</li>
+    <li>Enable real-time camera streaming for surveillance applications.</li>
+    <li>Provide analytics including peak, average, and uptime monitoring.</li>
   </ul>
 
-  <h2>3. Proposed Solution</h2>
+  <h2>3. Literature Review Summary</h2>
   <p>
-    The proposed SpiderBot 2.0 system integrates embedded hardware 
-    with IoT cloud services. The robot collects environmental data 
-    and transmits it securely to a cloud database for visualization 
-    and analysis through a responsive web interface.
+    Previous gas monitoring systems primarily rely on static sensor nodes 
+    with limited remote access capabilities. Recent IoT-based solutions 
+    introduce cloud connectivity but often lack mobility and integrated 
+    surveillance. The proposed Hexapod Monitoring System addresses these 
+    limitations by combining robotic mobility, cloud integration, and 
+    real-time visualization within a unified architecture.
   </p>
 
-  <h2>4. Methodology</h2>
+  <h2>4. Proposed Methodology</h2>
   <p>
-    The development process includes hardware integration, firmware 
-    programming, WiFi-based communication, cloud database setup, 
-    and web dashboard implementation. Iterative testing ensures 
-    reliability and accuracy.
+    The development process follows an embedded systems and IoT integration 
+    methodology. Hardware components are integrated with the ESP32 
+    microcontroller. Sensor data is collected, processed, and transmitted 
+    via WiFi to Firebase Cloud. The web dashboard listens to real-time 
+    database updates and dynamically renders graphs, alerts, and analytics.
   </p>
 
-  <h2>5. Expected Outcomes</h2>
+  <h2>5. System Implementation</h2>
   <ul style="text-align:left; max-width:800px; margin:auto;">
-    <li>Accurate gas detection in real time.</li>
-    <li>Stable cloud communication.</li>
-    <li>User-friendly monitoring dashboard.</li>
-    <li>Enhanced safety monitoring solution.</li>
+    <li>Sensor calibration and data acquisition using ESP32 firmware.</li>
+    <li>Secure WiFi communication with Firebase cloud services.</li>
+    <li>Real-time dashboard visualization using HTML, CSS, JavaScript, and Chart.js.</li>
+    <li>Alert logic implementation for hazardous threshold detection.</li>
+    <li>Historical data tracking and analytics generation.</li>
   </ul>
 
-  <h2>6. Future Improvements</h2>
+  <h2>6. Expected Outcomes</h2>
   <ul style="text-align:left; max-width:800px; margin:auto;">
-    <li>AI-based hazard prediction.</li>
-    <li>Mobile application integration.</li>
-    <li>Autonomous navigation using advanced sensors.</li>
-    <li>Data analytics and reporting features.</li>
+    <li>Accurate detection of hazardous gas concentrations in real time.</li>
+    <li>Stable and secure cloud communication architecture.</li>
+    <li>Responsive and user-friendly monitoring interface.</li>
+    <li>Enhanced situational awareness through live surveillance.</li>
+    <li>Improved safety monitoring solution for hazardous environments.</li>
+  </ul>
+
+  <h2>7. Research Contributions</h2>
+  <ul style="text-align:left; max-width:800px; margin:auto;">
+    <li>Integration of mobile robotics with IoT cloud infrastructure.</li>
+    <li>Real-time analytics and visualization framework.</li>
+    <li>Modular and scalable system architecture design.</li>
+    <li>Combined environmental sensing and surveillance solution.</li>
+  </ul>
+
+  <h2>8. Future Improvements</h2>
+  <ul style="text-align:left; max-width:800px; margin:auto;">
+    <li>AI-based hazard prediction using machine learning models.</li>
+    <li>Mobile application integration for remote alerts.</li>
+    <li>Autonomous navigation using additional sensor fusion techniques.</li>
+    <li>Advanced data analytics and long-term trend analysis.</li>
+    <li>Secure authentication and multi-user access control.</li>
   </ul>
 
 </section>
+
+<footer>
+  © <span id="year"></span> Hexapod Monitoring System |
+  Department of Computing
+</footer>
+
+<script>
+  document.getElementById("year").innerText =
+    new Date().getFullYear();
+</script>
 
 </body>
 </html>
