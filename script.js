@@ -1,5 +1,9 @@
 <script>
 
+  function testClick() {
+  alert("Button is working");
+}
+
 // ===== FIREBASE CONFIG =====
 const firebaseConfig = {
   apiKey: "AIzaSyCehgDLT0amLHXWi1hBSSJzvBQ7R2Nhmg",
@@ -156,4 +160,5 @@ function generateReport() {
 
 
 </script>
+
 
