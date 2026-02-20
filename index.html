@@ -7,10 +7,11 @@
 <body>
 
 <nav class="navbar">
-  <div class="logo">SpiderBot-2.0</div>
+  <div class="logo">Hexapod-Cloud</div>
   <ul>
     <li><a href="index.html">Home</a></li>
     <li><a href="dashboard.html">Live Dashboard</a></li>
+    <li><a href="history.html">History</a></li>
     <li><a href="architecture.html">Architecture</a></li>
     <li><a href="research.html">Research</a></li>
     <li><a href="team.html">Team</a></li>
@@ -20,25 +21,65 @@
 <section class="hero">
   <div class="hero-content">
     <h1>Smart Hexapod Monitoring Platform</h1>
-    <p>Cloud-Connected Environmental Monitoring & Surveillance Robot</p>
-    <a href="dashboard.html" class="btn">View Live System</a>
+    <p>
+      Cloud-Connected Environmental Gas Detection & Real-Time Surveillance System
+    </p>
+    <a href="dashboard.html" class="btn">View Live Monitoring</a>
   </div>
 </section>
 
 <section class="features">
+
   <div class="card">
     <h3>Real-Time Gas Detection</h3>
-    <p>MQ-7 & MQ-135 sensors provide continuous environmental monitoring.</p>
+    <p>
+      MQ-7 & MQ-135 sensors continuously monitor CO concentration and air quality,
+      providing instant cloud updates.
+    </p>
   </div>
+
   <div class="card">
     <h3>Cloud Integration</h3>
-    <p>Firebase-based cloud architecture for remote data access.</p>
+    <p>
+      Sensor data is transmitted to Firebase Realtime Database,
+      enabling remote monitoring from anywhere.
+    </p>
   </div>
+
   <div class="card">
     <h3>Live Surveillance</h3>
-    <p>ESP32-CAM provides real-time video monitoring.</p>
+    <p>
+      Integrated ESP32-CAM provides real-time video streaming
+      for remote situational awareness.
+    </p>
   </div>
+
+  <div class="card">
+    <h3>Historical Analytics</h3>
+    <p>
+      View historical sensor data trends, peak values,
+      and analytics through interactive graph visualization.
+    </p>
+  </div>
+
 </section>
+
+<section class="architecture" style="text-align:center; padding:60px 20px;">
+  <h2>System Data Flow</h2>
+  <p>
+    Sensors → ESP32 → WiFi → Firebase Cloud → Web Dashboard
+  </p>
+</section>
+
+<footer>
+  © <span id="year"></span> Hexapod Monitoring System | Department of Computing
+</footer>
+
+<script>
+  // Dynamic Year
+  document.getElementById("year").innerText =
+    new Date().getFullYear();
+</script>
 
 </body>
 </html>
