@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>System Architecture - SpiderBot 2.0</title>
+  <meta charset="UTF-8">
+  <title>System Architecture - Hexapod</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<!-- ===== NAVBAR ===== -->
 <nav class="navbar">
-  <div class="logo">SpiderBot-2.0</div>
+  <div class="logo">Hexapod-Cloud</div>
   <ul>
     <li><a href="index.html">Home</a></li>
     <li><a href="dashboard.html">Live Dashboard</a></li>
@@ -25,42 +27,74 @@
 
   <h2>1. System Overview</h2>
   <p>
-    SpiderBot 2.0 is an IoT-based hexapod robotic monitoring system 
-    designed for environmental gas detection and real-time surveillance. 
-    The system integrates embedded hardware components with a cloud-based 
-    monitoring platform.
+    The Hexapod Monitoring System is an IoT-based mobile robotic platform 
+    designed for real-time environmental gas detection and cloud-connected 
+    surveillance. The system integrates embedded hardware components with 
+    cloud services and a responsive web dashboard for remote monitoring.
   </p>
 
   <h2>2. Hardware Architecture</h2>
-  <ul style="text-align:left; max-width:700px; margin:auto;">
-    <li><strong>ESP32 (Control Unit)</strong> – Handles movement and sensor coordination</li>
-    <li><strong>MQ-7 Gas Sensor</strong> – Detects Carbon Monoxide (CO)</li>
-    <li><strong>MQ-135 Sensor</strong> – Measures air quality</li>
-    <li><strong>ESP32-CAM</strong> – Provides live video surveillance</li>
-    <li><strong>Servo Motors</strong> – Controls hexapod movement</li>
+  <ul style="text-align:left; max-width:800px; margin:auto;">
+    <li><strong>ESP32 (Main Control Unit)</strong> – Handles sensor acquisition, WiFi communication, and data transmission.</li>
+    <li><strong>MQ-7 Gas Sensor</strong> – Detects Carbon Monoxide (CO) levels.</li>
+    <li><strong>MQ-135 Gas Sensor</strong> – Measures overall air quality and environmental gases.</li>
+    <li><strong>ESP32-CAM Module</strong> – Provides live video surveillance streaming.</li>
+    <li><strong>Servo Motor System</strong> – Controls hexapod locomotion and movement.</li>
+    <li><strong>Power Management System</strong> – Ensures stable voltage supply for sensors and control units.</li>
   </ul>
 
   <h2>3. Software Architecture</h2>
   <p>
-    The system uses ESP32 firmware for sensor acquisition and WiFi 
-    communication. Sensor data is transmitted to Firebase Realtime Database, 
-    where it is accessed by a web-based dashboard for visualization.
+    The firmware running on the ESP32 is responsible for real-time sensor 
+    data acquisition and WiFi-based communication. Sensor readings are 
+    transmitted to Firebase Realtime Database using secure cloud protocols. 
+    A web-based dashboard retrieves and visualizes this data dynamically.
   </p>
 
-  <h2>4. Data Flow</h2>
+  <h2>4. Cloud Integration</h2>
   <p>
-    Sensors → ESP32 → WiFi → Firebase Cloud → Web Dashboard
+    Firebase Realtime Database acts as the central cloud repository. 
+    It enables bidirectional communication between the embedded system 
+    and the web interface. The cloud architecture ensures scalability, 
+    remote accessibility, and real-time synchronization.
   </p>
 
-  <div style="margin-top:40px;">
-    <img src="architecture-diagram.png" alt="System Architecture Diagram">
-    <p style="margin-top:10px; font-size:14px; color:#64748b;">
-      Figure 1: High-Level System Architecture Diagram
-    </p>
-  </div>
+  <h2>5. Data Flow Model</h2>
+  <p>
+    <strong>
+      Sensors → ESP32 → WiFi Network → Firebase Cloud → Web Dashboard → End User
+    </strong>
+  </p>
+
+  <h2>6. System Operation Workflow</h2>
+  <ul style="text-align:left; max-width:800px; margin:auto;">
+    <li>Environmental data is captured by MQ-series sensors.</li>
+    <li>ESP32 processes and formats sensor readings.</li>
+    <li>Data is transmitted via WiFi to Firebase Cloud.</li>
+    <li>The web dashboard listens for real-time database updates.</li>
+    <li>Graphs, analytics, and alerts are dynamically updated.</li>
+  </ul>
+
+  <h2>7. Design Advantages</h2>
+  <ul style="text-align:left; max-width:800px; margin:auto;">
+    <li>Real-time monitoring capability.</li>
+    <li>Remote cloud-based access.</li>
+    <li>Scalable and modular system design.</li>
+    <li>Mobile robotic deployment for hazardous environments.</li>
+    <li>Integrated analytics and visualization platform.</li>
+  </ul>
 
 </section>
 
+<footer>
+  © <span id="year"></span> Hexapod Monitoring System |
+  Department of Computing
+</footer>
+
+<script>
+  document.getElementById("year").innerText =
+    new Date().getFullYear();
+</script>
+
 </body>
 </html>
-
