@@ -8,10 +8,11 @@
 /* ===== BODY ===== */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #eef2f7;   /* Soft gray-blue background */
+  background: #eef2f7;
   color: #1f2937;
   padding-top: 90px;
   line-height: 1.6;
+  transition: background 0.3s ease;
 }
 
 /* ===== NAVBAR ===== */
@@ -20,20 +21,13 @@ body {
   top: 0;
   width: 100%;
   height: 80px;
-  background: #1e293b;   /* Dark but not black */
+  background: #1e293b;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 60px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   z-index: 1000;
-}
-
-/* ===== ACTIVE NAV LINK ===== */
-.navbar a.active {
-  color: #38bdf8;
-  border-bottom: 2px solid #38bdf8;
-  padding-bottom: 4px;
 }
 
 .logo {
@@ -45,7 +39,7 @@ body {
 .navbar ul {
   list-style: none;
   display: flex;
-  gap: 30px;
+  gap: 25px;
 }
 
 .navbar a {
@@ -57,6 +51,13 @@ body {
 
 .navbar a:hover {
   color: #38bdf8;
+}
+
+/* ACTIVE LINK */
+.navbar a.active {
+  color: #38bdf8;
+  border-bottom: 2px solid #38bdf8;
+  padding-bottom: 4px;
 }
 
 /* ===== HERO SECTION ===== */
@@ -137,24 +138,27 @@ body {
   text-align: center;
 }
 
+.dashboard-grid {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
 .value {
   font-size: 28px;
   font-weight: bold;
   margin-top: 10px;
 }
 
-/* ===== GRAPH ===== */
-canvas {
-  max-width: 800px;
-  margin: 40px auto;
-  display: block;
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+/* ===== STATUS BAR ===== */
+.status-bar {
+  margin: 20px 0;
+  font-weight: 600;
 }
 
-/* ===== STATUS COLORS ===== */
+/* ===== ALERT COLORS ===== */
 .safe {
   color: #16a34a;
   font-weight: 600;
@@ -170,51 +174,18 @@ canvas {
   font-weight: 600;
 }
 
-/* ===== FOOTER ===== */
-footer {
-  text-align: center;
+/* ===== CHART ===== */
+canvas {
+  max-width: 900px;
+  margin: 40px auto;
+  display: block;
+  background: white;
   padding: 20px;
-  background: #1e293b;
-  color: #cbd5e1;
-  margin-top: 40px;
-  font-size: 14px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
 }
 
-/* ===== RESPONSIVE ===== */
-@media(max-width: 768px) {
-
-  .navbar {
-    padding: 0 20px;
-  }
-
-  .features {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .hero h1 {
-    font-size: 28px;
-  }
-
-  canvas {
-    width: 95%;
-  }
-
-}
-
-.status-bar {
-  margin: 20px 0;
-  font-weight: 600;
-}
-
-.dashboard-grid {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  flex-wrap: wrap;
-  margin-top: 40px;
-}
-
+/* ===== CAMERA SECTION ===== */
 .camera-box {
   margin-top: 50px;
   padding: 30px;
@@ -228,8 +199,32 @@ footer {
 
 .camera-box iframe {
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border-radius: 8px;
 }
 
+/* ===== TABLE (HISTORY PAGE) ===== */
+table {
+  width: 90%;
+  margin: 40px auto;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+  background: #1e293b;
+  color: white;
+}
+
+/* ===== ARCHITECTURE / RESEARCH SECTIONS ===== */
 .architecture {
   padding: 60px 20px;
   background: #eef2f7;
@@ -251,18 +246,13 @@ footer {
   text-align: center;
 }
 
-.architecture ul {
-  margin-top: 10px;
-}
-
 /* ===== TEAM SECTION ===== */
-
 .team-container {
   display: flex;
   justify-content: center;
   gap: 30px;
   padding: 60px 20px;
-  flex-wrap: wrap; /* Important for 5 members */
+  flex-wrap: wrap;
 }
 
 .member {
@@ -299,5 +289,41 @@ footer {
   color: #64748b;
 }
 
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #1e293b;
+  color: #cbd5e1;
+  margin-top: 40px;
+  font-size: 14px;
+}
 
+/* ===== RESPONSIVE ===== */
+@media(max-width: 768px) {
 
+  .navbar {
+    padding: 0 20px;
+  }
+
+  .navbar ul {
+    gap: 15px;
+  }
+
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  canvas {
+    width: 95%;
+  }
+
+  .camera-box {
+    width: 90%;
+  }
+}
