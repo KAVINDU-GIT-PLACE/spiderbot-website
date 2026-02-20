@@ -105,20 +105,59 @@ function exportCSV() {
 // ===== REPORT GENERATION FUNCTION =====
 function generateReport() {
 
-  const rows = document.querySelectorAll("#historyTable tr");
+  const table = document.getElementById("historyTable");
 
-  let reportWindow = window.open("", "", "width=900,height=700");
+  if (!table || table.rows.length === 0) {
+    alert("No data available to generate report.");
+    return;
+  }
 
-  reportWindow.document.write("<h2>Hexapod Monitoring Report</h2>");
-  reportWindow.document.write("<p>Generated: " + new Date().toLocaleString() + "</p>");
-  reportWindow.document.write("<table border='1' cellpadding='8' cellspacing='0'>");
-  reportWindow.document.write("<tr><th>Time</th><th>CO Level</th><th>Air Quality</th></tr>");
+  let reportWindow = window.open("", "_blank", "width=900,height=700");
 
-  rows.forEach(row => {
-    reportWindow.document.write("<tr>" + row.innerHTML + "</tr>");
-  });
+  let htmlContent = `
+    <html>
+    <head>
+      <title>Hexapod Monitoring Report</title>
+      <style>
+        body { font-family: Arial; padding:20px; }
+        h2 { text-align:center; }
+        table {
+          width:100%;
+          border-collapse: collapse;
+          margin-top:20px;
+        }
+        th, td {
+          border:1px solid #000;
+          padding:8px;
+          text-align:center;
+        }
+        th {
+          background:#f2f2f2;
+        }
+      </style>
+    </head>
+    <body>
+      <h2>Hexapod Monitoring Report</h2>
+      <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+      <table>
+        <tr>
+          <th>Time</th>
+          <th>CO Level</th>
+          <th>Air Quality</th>
+        </tr>
+  `;
 
-  reportWindow.document.write("</table>");
+  for (let i = 0; i < table.rows.length; i++) {
+    htmlContent += "<tr>" + table.rows[i].innerHTML + "</tr>";
+  }
 
+  htmlContent += `
+      </table>
+    </body>
+    </html>
+  `;
+
+  reportWindow.document.open();
+  reportWindow.document.write(htmlContent);
   reportWindow.document.close();
 }
