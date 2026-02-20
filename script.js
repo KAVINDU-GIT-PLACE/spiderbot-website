@@ -110,8 +110,6 @@ function generateReport() {
     return;
   }
 
-  let reportWindow = window.open("", "_blank");
-
   let htmlContent = `
     <html>
     <head>
@@ -145,8 +143,17 @@ function generateReport() {
     </html>
   `;
 
-  reportWindow.document.write(htmlContent);
-  reportWindow.document.close();
+  const blob = new Blob([htmlContent], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "hexapod_report.html";
+  a.click();
+
+  URL.revokeObjectURL(url);
 }
 
+
 </script>
+
