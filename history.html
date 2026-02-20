@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Historical Data - Hexapod</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="logo">Hexapod-Cloud</div>
+  <ul>
+    <li><a href="dashboard.html">Live</a></li>
+    <li><a href="history.html">History</a></li>
+  </ul>
+</nav>
+
+<section class="dashboard-section">
+  <h1>Historical Monitoring Data</h1>
+  <canvas id="historyChart"></canvas>
+</section>
+
+<script>
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCehgDLT0amLHXWi1hBSSJzvBQ7R2Nhmg",
+  databaseURL: "https://hexapod-monitoring-system-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "hexapod-monitoring-system"
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+const ctx = document.getElementById("historyChart").getContext("2d");
+
+const historyChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: [],
+    datasets: [
+      {
+        label: "CO Level",
+        data: [],
+        borderColor: "#0ea5e9",
+        borderWidth: 2
+      },
+      {
+        label: "Air Quality",
+        data: [],
+        borderColor: "#ef4444",
+        borderWidth: 2
+      }
+    ]
+  }
+});
+
+// Listen to live data & store last 50 values
+database.ref("hexapod").on("value", (snapshot) => {
+
+  const data = snapshot.val();
+  if(data){
+
+    if(historyChart.data.labels.length > 50){
+      historyChart.data.labels.shift();
+      historyChart.data.datasets[0].data.shift();
+      historyChart.data.datasets[1].data.shift();
+    }
+
+    historyChart.data.labels.push(new Date().toLocaleTimeString());
+    historyChart.data.datasets[0].data.push(data.co);
+    historyChart.data.datasets[1].data.push(data.air);
+
+    historyChart.update();
+  }
+
+});
+
+</script>
+
+</body>
+</html>
